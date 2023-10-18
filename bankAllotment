@@ -14,7 +14,11 @@ const reader = readline.createInterface({input: stream});
 let data = [];
 // proceeding 3 vars are for sorting respective spending
 var shopping = 0;
+let dataShopping = ["AMAZON", "AMZN", "KLARNA", "AFTERPAY", "MICHAELS", "TARGET", "NAVY", "BARNES"];
+var subs = 0;
+let dataSubs = ["NETFLIX", "WATER","WUNC", "NYTIMES", "DISNEY", "APPLE", "PEACOCK"];
 var food = 0;
+let dataFood = ["PANERA", "FUQUA", "CHICK-FIL-A", "WHOLEFDS", "HACIENDA", "TOKYO", "FOOD", "LOCOPOPS", "ENZOS", "POKEWORKS",  ]
 var other = 0;
 
 reader. on("line", row => {
@@ -22,21 +26,42 @@ reader. on("line", row => {
     data.push(row.split(","));
 });
 
+// when reader finishes a csv
 reader.on("close", () => {
-    console.log(data);
-    for (let n = 0; n < data.length;n++){
-        if (data[n][0].includes("amazon")||data[n][0].includes("target")){
-            shopping += parseInt(data[n][1]);
-        }
-        else if (data[n][0].includes("food")||data[n][0].includes("chik")){
-            food += parseInt(data[n][1]);
-        }
-        else{
-            other += parseInt(data[n][1]);
-        };
+    // next line was to see if data was being populated
+    //console.log(data);
+    // for loop through data adding values to respective spending variables 
+    for (let n = 1; n < data.length;n++){
+        //console.log(data[n][2]);
+        shopping = (iterateDataSets(data[n][2], data[n][3],dataShopping,shopping));
+        //console.log("Shopping = " + shopping);
+        subs = (iterateDataSets(data[n][2], data[n][3],dataSubs,subs));
+        //console.log("subs " +subs);
+        food = (iterateDataSets(data[n][2],data[n][3],dataFood,food));
+        // food variable
+        other += parseInt(data[n][3]);
     }
+
+    // output variable counts
     console.log("Shopping = " + shopping);
     console.log("Food = " +food);
+    console.log("Subscriptions = " +subs);
     console.log("Other = " +other);
 });
+
+function iterateDataSets(dataActivelySearching, dataActivelyCost, dataSet, spendingVar) {
+    for (let x = 0; x < dataSet.length;x++)
+    {
+        //console.log(dataActivelySearching,dataActivelyCost, dataSet);
+        if (dataActivelySearching.includes(dataSet[x])){
+            console.log(dataSet[x] + " : " + dataActivelyCost)
+            spendingVar += parseInt(dataActivelyCost);
+            return spendingVar;
+            break;
+        }     
+        
+    }
+    return spendingVar;
+
+}
 
