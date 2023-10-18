@@ -1,0 +1,42 @@
+
+//
+console.log('');
+
+//copied code for importing file
+const fs = require("fs");
+const readline = require("readline");
+//read stream that uses local example.csv title 
+const stream = fs.createReadStream("./example.csv");
+const reader = readline.createInterface({input: stream});
+
+//establish variables
+// data is an array for holding incoming csv
+let data = [];
+// proceeding 3 vars are for sorting respective spending
+var shopping = 0;
+var food = 0;
+var other = 0;
+
+reader. on("line", row => {
+    // this is splitter
+    data.push(row.split(","));
+});
+
+reader.on("close", () => {
+    console.log(data);
+    for (let n = 0; n < data.length;n++){
+        if (data[n][0].includes("amazon")||data[n][0].includes("target")){
+            shopping += parseInt(data[n][1]);
+        }
+        else if (data[n][0].includes("food")||data[n][0].includes("chik")){
+            food += parseInt(data[n][1]);
+        }
+        else{
+            other += parseInt(data[n][1]);
+        };
+    }
+    console.log("Shopping = " + shopping);
+    console.log("Food = " +food);
+    console.log("Other = " +other);
+});
+
