@@ -33,9 +33,10 @@ reader.on("close", () => {
     // for loop through data adding values to respective spending variables 
     for (let n = 1; n < data.length;n++){
         //console.log(data[n][2]);
-        shopping = (iterateDataSets(data[n][2], data[n][3],dataShopping,shopping));
-        //console.log("Shopping = " + shopping);
-        subs = (iterateDataSets(data[n][2], data[n][3],dataSubs,subs));
+        if((shopping = (iterateDataSets(data[n][2], data[n][3],dataShopping,shopping)))||
+        (subs = (iterateDataSets(data[n][2], data[n][3],dataSubs,subs))));
+        console.log("continuing");
+        //subs = (iterateDataSets(data[n][2], data[n][3],dataSubs,subs));
         //console.log("subs " +subs);
         food = (iterateDataSets(data[n][2],data[n][3],dataFood,food));
         // food variable
@@ -57,7 +58,6 @@ function iterateDataSets(dataActivelySearching, dataActivelyCost, dataSet, spend
             console.log(dataSet[x] + " : " + dataActivelyCost)
             spendingVar += parseInt(dataActivelyCost);
             return spendingVar;
-            break;
         }     
         
     }
