@@ -1,6 +1,8 @@
 
-//
-console.log('');
+// Isaiah Cooper
+// 10/19/2023
+// Program imports a csv as a multidimensional array, and compares it to a hardcoded list of categorized keywords
+// Then outputs costs associated with those keywords. 
 
 //copied code for importing file
 const fs = require("fs");
@@ -14,12 +16,27 @@ const reader = readline.createInterface({input: stream});
 let data = [];
 // proceeding 3 vars are for sorting respective spending
 var shopping = 0;
-let dataShopping = ["AMAZON", "AMZN", "KLARNA", "AFTERPAY", "MICHAELS", "TARGET", "NAVY", "BARNES"];
+let dataShopping = ["AMAZON", "AMZN", "KLARNA", "AFTERPAY", "MICHAELS", "TARGET", "NAVY", "BARNES", "ATOMIC",
+"WALMART", "STAPLES", "NOOM", "TIC TAC", "DUKE CARD", "VENDING"];
 var subs = 0;
-let dataSubs = ["NETFLIX", "WATER","WUNC", "NYTIMES", "DISNEY", "APPLE", "PEACOCK"];
+let dataSubs = ["NETFLIX", "WATER","WUNC", "NYTIMES", "DISNEY", "APPLE", "PEACOCK","AUDIBLE","SPOTIFY"];
 var food = 0;
-let dataFood = ["PANERA", "FUQUA", "CHICK-FIL-A", "WHOLEFDS", "HACIENDA", "TOKYO", "FOOD", "LOCOPOPS", "ENZOS", "POKEWORKS"  ]
+let dataFood = ["PANERA", "FUQUA", "CHICK-FIL-A", "WHOLEFDS", "HACIENDA", "TOKYO", "FOOD", "LOCOPOPS", "ENZOS", 
+"POKEWORKS","SALADELIA","MCDONALDS","STARBUCKS", "DINING","FREDDY", "TANDOORI", "EARLY BIRD", "HARRIS", "COSTCO", 
+"FIRST WATCH", "DOORDASH", "Q SHA", "WEGMANS", "DRAGON INN", "MONUTS" ];
 var other = 0;
+let dataLiving = ["DUKEENERGY", "ATT","ENERGY","BRANCH","MORTG","ROCK"];
+var living = 0;
+let dataGas = ["BP", "SHELL", "EXXON", "CIRCLE K", "REFUEL" ];
+var gas = 0;
+let dataBigDance = ["BARRE", "NINTH STREET DANCE"];
+var bigDance = 0;
+let dataLilDance = ["ENCORE","GOLDFISH"];
+var lilDance = 0;
+let dataTami = ["VENMO"];
+var tami = 0;
+
+var income = 0;
 
 reader. on("line", row => {
     // this is splitter
@@ -30,38 +47,92 @@ reader. on("line", row => {
 reader.on("close", () => {
     // next line was to see if data was being populated
     //console.log(data);
+
     // for loop through data adding values to respective spending variables 
     for (let n = 1; n < data.length;n++){
-        //console.log(data[n][2]);
-        if((shopping = (iterateDataSets(data[n][2], data[n][3],dataShopping,shopping)))||
-        (subs = (iterateDataSets(data[n][2], data[n][3],dataSubs,subs))));
-        console.log("continuing");
-        //subs = (iterateDataSets(data[n][2], data[n][3],dataSubs,subs));
-        //console.log("subs " +subs);
-        food = (iterateDataSets(data[n][2],data[n][3],dataFood,food));
-        // food variable
-        other += parseInt(data[n][3]);
+        // making "working" variables to hold numbers so we don't get false truthies
+        let workingShopping = 0;
+        let workingSubs = 0;
+        let workingFood = 0;
+        let workingLiving = 0;
+        let workingBigDance = 0;
+        let workingLilDance = 0;
+        let workingTami = 0;
+        let workingGas = 0;
+        
+        //using falsy logic to function through datasets looking for matches, ideally sorted by size of the data set to reduce time, 
+        // IE dataFood is the largest and broadest category, to save from everthing filtering through it before moving onto dataShopping
+        // or dataDance I'm placing it towards the end. Gas is below it because gas containts BP which I think may accidentally trigger 
+        // things more than BP gas 
+        if((workingShopping = (iterateDataSets(data[n][2], data[n][3],dataShopping)))||
+        (workingSubs = (iterateDataSets(data[n][2], data[n][3],dataSubs)))||
+        (workingLiving = (iterateDataSets(data[n][2], data[n][3],dataLiving)))||
+        (workingLilDance = (iterateDataSets(data[n][2], data[n][3],dataLilDance)))||
+        (workingBigDance = (iterateDataSets(data[n][2], data[n][3],dataBigDance)))||
+        (workingTami = (iterateDataSets(data[n][2], data[n][3],dataTami)))||
+        (workingFood = (iterateDataSets(data[n][2], data[n][3],dataFood)))||
+        (workingGas = (iterateDataSets(data[n][2], data[n][3],dataGas))))
+        {
+            //if it finds something truthy in the logic before it runs through them adds all results from working
+            // ideally I'd like to only trigger whichever returned, still working on how to do that
+            shopping += parseInt(workingShopping);
+            subs += parseInt(workingSubs);
+            living += parseInt(workingLiving);
+            lilDance += parseInt(workingLilDance);
+            bigDance += parseInt(workingBigDance);
+            food += parseInt(workingFood);
+            tami += parseInt(workingTami);
+            gas += parseInt(workingGas);
+        }
+        // if data[n][3] is not undefined add it to other section
+        else if (data[n][3])
+        {other += parseInt(data[n][3])}
+        // if data[n][3] is undefined it's a deposit
+        // added != this to filter out transfers from looking like income
+        else if (data[n][2]!="Transfer from Shares")
+        {income += parseInt(data[n][4])};
+               
     }
-
+    var totalExpenses = 0;
     // output variable counts
+    console.log("------------------");
     console.log("Shopping = " + shopping);
-    console.log("Food = " +food);
+    totalExpenses += shopping;
     console.log("Subscriptions = " +subs);
+    totalExpenses += subs;
+    console.log("Food = " +food);
+    totalExpenses += food;
+    console.log("Living Expenses = " +living);
+    totalExpenses += living;
+    console.log("Adult Dance = " +bigDance);
+    totalExpenses += bigDance;
+    console.log("Child Dance = " +lilDance);
+    totalExpenses += lilDance;
+    console.log("Gas = " +gas);
+    totalExpenses += gas;
+    console.log("Tami = " +tami);
+    totalExpenses += tami;
     console.log("Other = " +other);
+    totalExpenses += other;
+    console.log("Income = " + income);
+    console.log("Expenditure = " +totalExpenses)
+    console.log("Profit = " + (income - (shopping + subs + food + living + bigDance + lilDance + other)))
 });
-
-function iterateDataSets(dataActivelySearching, dataActivelyCost, dataSet, spendingVar) {
+//this function accepts the description and price from the imported csv via array,
+// and compares it against a provided dataset. Then returns either undefined if it had no match
+// or an the cost of the described item
+function iterateDataSets(dataActivelySearching, dataActivelyCost, dataSet) {
+    let spendingVar = 0;
     for (let x = 0; x < dataSet.length;x++)
     {
         //console.log(dataActivelySearching,dataActivelyCost, dataSet);
         if (dataActivelySearching.includes(dataSet[x])){
+            //next line is just for testing and can be removed later on
             console.log(dataSet[x] + " : " + dataActivelyCost)
             spendingVar += parseInt(dataActivelyCost);
             return spendingVar;
         }     
-        
     }
     return spendingVar;
-
 }
 
