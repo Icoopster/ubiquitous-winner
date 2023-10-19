@@ -18,7 +18,7 @@ let dataShopping = ["AMAZON", "AMZN", "KLARNA", "AFTERPAY", "MICHAELS", "TARGET"
 var subs = 0;
 let dataSubs = ["NETFLIX", "WATER","WUNC", "NYTIMES", "DISNEY", "APPLE", "PEACOCK"];
 var food = 0;
-let dataFood = ["PANERA", "FUQUA", "CHICK-FIL-A", "WHOLEFDS", "HACIENDA", "TOKYO", "FOOD", "LOCOPOPS", "ENZOS", "POKEWORKS",  ]
+let dataFood = ["PANERA", "FUQUA", "CHICK-FIL-A", "WHOLEFDS", "HACIENDA", "TOKYO", "FOOD", "LOCOPOPS", "ENZOS", "POKEWORKS"  ]
 var other = 0;
 
 reader. on("line", row => {
