@@ -14,24 +14,39 @@ const reader = readline.createInterface({input: stream});
 //establish variables
 // data is an array for holding incoming csv
 let data = [];
-// proceeding 3 vars are for sorting respective spending
+
+//making an object that acts like a dictionary, it should have a string, an array of arrays
+var referenceDict = {dataShopping : [["AMAZON", 0], ["AMZN", 0], ["KLARNA", 0], ["AFTERPAY", 0], ["MICHAELS", 0],
+["TARGET", 0], ["NAVY", 0], ["BARNES", 0], ["ATOMIC", 0], ["WALMART", 0], ["STAPLES", 0], ["NOOM", 0],
+["TIC TAC", 0], ["DUKE CARD", 0], ["VENDING", 0]],
+dataSubs: [["NETFLIX", 0], ["WATER",0], ["WUNC",0], ["NYTIMES",0], ["DISNEY",0], ["APPLE",0], ["PEACOCK",0],["AUDIBLE",0],["SPOTIFY",0]],
+dataLiving: [["DUKEENERGY", 0], ["ATT", 0], ["ENERGY", 0], ["BRANCH", 0],["MORTG", 0],["ROCK",0]],
+dataGas: [["BP",0], ["SHELL",0], ["EXXON",0], ["CIRCLE K",0], ["REFUEL",0]],
+dataBigDance: [["BARRE",0],["NINTH STREET DANCE",0]],
+dataLilDance: [["ENCORE",0],["GOLDFISH",0]],
+dataFood: [["PANERA",0], ["FUQUA",0], ["CHICK-FIL-A",0], ["WHOLEFDS",0], ["HACIENDA",0], ["TOKYO",0], ["FOOD",0], ["LOCOPOPS",0], ["ENZOS",0],
+["POKEWORKS",0],["SALADELIA",0],["MCDONALDS",0],["STARBUCKS",0],["DINING",0],["FREDDY",0],["TANDOORI",0],["EARLY BIRD",0],["HARRIS",0], 
+["COSTCO", 0],["FIRST WATCH",0],["DOORDASH",0],["Q SHA",0],["WEGMANS",0],["DRAGON INN",0],["MONUTS",0]]
+}
+
+// proceeding vars are for sorting respective spending
 var shopping = 0;
-let dataShopping = ["AMAZON", "AMZN", "KLARNA", "AFTERPAY", "MICHAELS", "TARGET", "NAVY", "BARNES", "ATOMIC",
-"WALMART", "STAPLES", "NOOM", "TIC TAC", "DUKE CARD", "VENDING"];
+//let dataShopping = ["AMAZON", "AMZN", "KLARNA", "AFTERPAY", "MICHAELS", "TARGET", "NAVY", "BARNES", "ATOMIC",
+//"WALMART", "STAPLES", "NOOM", "TIC TAC", "DUKE CARD", "VENDING"];
 var subs = 0;
-let dataSubs = ["NETFLIX", "WATER","WUNC", "NYTIMES", "DISNEY", "APPLE", "PEACOCK","AUDIBLE","SPOTIFY"];
+//let dataSubs = ["NETFLIX", "WATER","WUNC", "NYTIMES", "DISNEY", "APPLE", "PEACOCK","AUDIBLE","SPOTIFY"];
 var food = 0;
 let dataFood = ["PANERA", "FUQUA", "CHICK-FIL-A", "WHOLEFDS", "HACIENDA", "TOKYO", "FOOD", "LOCOPOPS", "ENZOS", 
 "POKEWORKS","SALADELIA","MCDONALDS","STARBUCKS", "DINING","FREDDY", "TANDOORI", "EARLY BIRD", "HARRIS", "COSTCO", 
 "FIRST WATCH", "DOORDASH", "Q SHA", "WEGMANS", "DRAGON INN", "MONUTS" ];
 var other = 0;
-let dataLiving = ["DUKEENERGY", "ATT","ENERGY","BRANCH","MORTG","ROCK"];
+//let dataLiving = ["DUKEENERGY", "ATT","ENERGY","BRANCH","MORTG","ROCK"];
 var living = 0;
-let dataGas = ["BP", "SHELL", "EXXON", "CIRCLE K", "REFUEL" ];
+//let dataGas = ["BP", "SHELL", "EXXON", "CIRCLE K", "REFUEL" ];
 var gas = 0;
-let dataBigDance = ["BARRE", "NINTH STREET DANCE"];
+//let dataBigDance = ["BARRE", "NINTH STREET DANCE"];
 var bigDance = 0;
-let dataLilDance = ["ENCORE","GOLDFISH"];
+//let dataLilDance = ["ENCORE","GOLDFISH"];
 var lilDance = 0;
 let dataTami = ["VENMO"];
 var tami = 0;
@@ -64,8 +79,8 @@ reader.on("close", () => {
         // IE dataFood is the largest and broadest category, to save from everthing filtering through it before moving onto dataShopping
         // or dataDance I'm placing it towards the end. Gas is below it because gas containts BP which I think may accidentally trigger 
         // things more than BP gas 
-        if((workingShopping = (iterateDataSets(data[n][2], data[n][3],dataShopping)))||
-        (workingSubs = (iterateDataSets(data[n][2], data[n][3],dataSubs)))||
+        if((workingShopping = (iterateDataSets(data[n][2], data[n][3],referenceDict.dataShopping)))||
+        (workingSubs = (iterateDataSets(data[n][2], data[n][3],referenceDict.dataSubs)))||
         (workingLiving = (iterateDataSets(data[n][2], data[n][3],dataLiving)))||
         (workingLilDance = (iterateDataSets(data[n][2], data[n][3],dataLilDance)))||
         (workingBigDance = (iterateDataSets(data[n][2], data[n][3],dataBigDance)))||
@@ -117,6 +132,32 @@ reader.on("close", () => {
     console.log("Income = " + income);
     console.log("Expenditure = " +totalExpenses)
     console.log("Profit = " + (income - (shopping + subs + food + living + bigDance + lilDance + other)))
+
+
+    var output = document.getElementById("output");
+    var text = document.createTextNode("------------------");
+    output.appendChild(text);
+    console.log("Shopping = " + shopping);
+    totalExpenses += shopping;
+    console.log("Subscriptions = " +subs);
+    totalExpenses += subs;
+    console.log("Food = " +food);
+    totalExpenses += food;
+    console.log("Living Expenses = " +living);
+    totalExpenses += living;
+    console.log("Adult Dance = " +bigDance);
+    totalExpenses += bigDance;
+    console.log("Child Dance = " +lilDance);
+    totalExpenses += lilDance;
+    console.log("Gas = " +gas);
+    totalExpenses += gas;
+    console.log("Tami = " +tami);
+    totalExpenses += tami;
+    console.log("Other = " +other);
+    totalExpenses += other;
+    console.log("Income = " + income);
+    console.log("Expenditure = " +totalExpenses)
+    console.log("Profit = " + (income - (shopping + subs + food + living + bigDance + lilDance + other)))
 });
 //this function accepts the description and price from the imported csv via array,
 // and compares it against a provided dataset. Then returns either undefined if it had no match
@@ -126,9 +167,10 @@ function iterateDataSets(dataActivelySearching, dataActivelyCost, dataSet) {
     for (let x = 0; x < dataSet.length;x++)
     {
         //console.log(dataActivelySearching,dataActivelyCost, dataSet);
-        if (dataActivelySearching.includes(dataSet[x])){
+        if (dataActivelySearching.includes(dataSet[x][0])){
             //next line is just for testing and can be removed later on
             console.log(dataSet[x] + " : " + dataActivelyCost)
+            dataSet[x][1] = dataActivelyCost;
             spendingVar += parseInt(dataActivelyCost);
             return spendingVar;
         }     
@@ -136,3 +178,6 @@ function iterateDataSets(dataActivelySearching, dataActivelyCost, dataSet) {
     return spendingVar;
 }
 
+function iterateDictionary(dataSearching, dataCost, dataSetII) {
+
+}
