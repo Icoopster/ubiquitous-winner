@@ -1,6 +1,6 @@
 # ubiquitous-winner
-JS project that inports csv and spits out percentages of spending
-This uses csv's that art outputted from Navy Federal Credit Union's website. I'm not sure if it will be useful for other people. It also has a Venmo section named after 
+JS project that imports csv and spits out percentages of spending
+This uses csv's that are outputted from Navy Federal Credit Union's website. I'm not sure if it will be useful for other people. It also has a Venmo section named after 
 my MIL, which will probably not be useful for other people. 
 It turns csvs into Arrays of Arrays and then iterates through them comparing them to hardcoded keywords.
 
